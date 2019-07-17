@@ -11,7 +11,7 @@ public class GUI {
     private JFrame frm;
 
     public GUI() {
-        frm = new JFrame("CatalogComponent");
+        frm = new JFrame("UniTree");
         frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frm.setSize(WIDTH, HEIGHT);
         int xPos = Toolkit.getDefaultToolkit().getScreenSize().width / 2 - WIDTH / 2;
