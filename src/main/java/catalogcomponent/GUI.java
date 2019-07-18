@@ -2,6 +2,8 @@ package catalogcomponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GUI {
 
@@ -9,6 +11,11 @@ public class GUI {
     private static final int HEIGHT = 800;
 
     private JFrame frm;
+
+    private JButton showCatalogBtn;
+
+    private ActionHandler actionHandler;
+    private UniTree uniTree;
 
     public GUI() {
         frm = new JFrame("UniTree");
@@ -21,6 +28,20 @@ public class GUI {
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
+        JPanel toolPane = new JPanel();
+        toolPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        showCatalogBtn = new JButton("Показать каталог");
+        toolPane.add(showCatalogBtn);
+
+        showCatalogBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actionHandler.showCatalog();
+            }
+        });
+
+        contentPane.add(toolPane, BorderLayout.NORTH);
         frm.setContentPane(contentPane);
     }
 
@@ -31,6 +52,14 @@ public class GUI {
                 frm.setVisible(true);
             }
         });
+    }
+
+    public void setUniTree(UniTree uniTree) {
+        this.uniTree = uniTree;
+    }
+
+    public void setActionHandler(ActionHandler actionHandler) {
+        this.actionHandler = actionHandler;
     }
 
 }
