@@ -6,4 +6,19 @@
 
     <bean id="gui" class="catalogcomponent.GUI" init-method="showGui"/>
 
+    <bean id="catalogDAO" class="catalogcomponent.dataaccess.CatalogDAO">
+        <constructor-arg ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.sqlite.JDBC"/>
+        <property name="url" value="jdbc:sqlite:database\\database.db"/>
+        <property name="username" value=""/>
+        <property name="password" value=""/>
+    </bean>
+
 </beans>
