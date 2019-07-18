@@ -4,6 +4,8 @@ import catalogcomponent.dataelements.TreeElement;
 
 import javax.swing.*;
 import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -15,12 +17,15 @@ import java.util.List;
 public class UniTree {
 
     private JPanel contentPane;
+    private JLabel selectedItemLab;
 
     private JTree tree;
     private Model model;
 
     private ArrayList<TreeElement> content;
     private ElementsComparator elementsComparator;
+
+    private TreeElement selectedElement;
 
     private class ElementsComparator implements Comparator<TreeElement> {
 
@@ -108,10 +113,14 @@ public class UniTree {
 
     public UniTree() {
         content = new ArrayList<>();
+        selectedElement = null;
         elementsComparator = new ElementsComparator();
 
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout(5, 5));
+
+        selectedItemLab = new JLabel("");
+        contentPane.add(selectedItemLab, BorderLayout.NORTH);
 
         model = new Model();
         tree = new JTree(model);
@@ -120,6 +129,16 @@ public class UniTree {
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setFont(new Font(null, Font.PLAIN, 14));
 
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                if (e.getNewLeadSelectionPath()==null){
+                    return;
+                }
+                selectedElement = (TreeElement)e.getNewLeadSelectionPath().getLastPathComponent();
+                selectedItemLab.setText(selectedElement.toString());
+            }
+        });
 
         contentPane.add(new JScrollPane(tree), BorderLayout.CENTER);
     }
@@ -134,6 +153,10 @@ public class UniTree {
 
         tree.updateUI();
         tree.expandRow(0);
+    }
+
+    public TreeElement getSelectedElement(){
+        return selectedElement;
     }
 
 }
