@@ -22,6 +22,7 @@ public class CatalogDAO {
             public TreeElement mapRow(ResultSet resultSet, int i) throws SQLException {
                 int id = resultSet.getInt(1);
                 Integer parentId = resultSet.getInt(2);
+                if (resultSet.wasNull()) parentId = null;
                 String name = resultSet.getString(3);
                 return new TreeElement(id, parentId, name);
             }

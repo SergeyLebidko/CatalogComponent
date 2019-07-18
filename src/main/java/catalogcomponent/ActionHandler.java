@@ -23,9 +23,7 @@ public class ActionHandler {
 
     public void showCatalog() {
         List<TreeElement> list = catalogDAO.getTreeElementList();
-        for (TreeElement element : list) {
-            System.out.println(element);
-        }
+        uniTree.setContent(list);
     }
 
 }

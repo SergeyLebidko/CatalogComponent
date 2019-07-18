@@ -56,6 +56,7 @@ public class GUI {
 
     public void setUniTree(UniTree uniTree) {
         this.uniTree = uniTree;
+        frm.getContentPane().add(uniTree.getVisualComponent(), BorderLayout.CENTER);
     }
 
     public void setActionHandler(ActionHandler actionHandler) {
