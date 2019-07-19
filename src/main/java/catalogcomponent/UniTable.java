@@ -214,7 +214,7 @@ public class UniTable {
         model.refresh();
     }
 
-    public DataElement getSelectedItem() {
+    public DataElement getSelectedElement() {
         int selectedIndex = table.getSelectedRow();
         if (selectedIndex == (-1)) return null;
         return checkedContent.get(selectedIndex);

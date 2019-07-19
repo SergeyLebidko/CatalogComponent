@@ -131,16 +131,7 @@ public class UniTree {
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setFont(mainFont);
 
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                if (e.getNewLeadSelectionPath() == null) {
-                    return;
-                }
-                selectedGroup = (Group) e.getNewLeadSelectionPath().getLastPathComponent();
-                selectedItemLab.setText(selectedGroup.toString());
-            }
-        });
+        tree.addTreeSelectionListener(selectionListener);
 
         contentPane.add(new JScrollPane(tree), BorderLayout.CENTER);
     }
@@ -160,5 +151,16 @@ public class UniTree {
     public Group getSelectedGroup() {
         return selectedGroup;
     }
+
+    private TreeSelectionListener selectionListener = new TreeSelectionListener() {
+        @Override
+        public void valueChanged(TreeSelectionEvent e) {
+            if (e.getNewLeadSelectionPath() == null) {
+                return;
+            }
+            selectedGroup = (Group) e.getNewLeadSelectionPath().getLastPathComponent();
+            selectedItemLab.setText(selectedGroup.toString());
+        }
+    };
 
 }
