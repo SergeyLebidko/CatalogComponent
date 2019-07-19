@@ -1,5 +1,6 @@
 package catalogcomponent;
 
+import catalogcomponent.Listeners.UniTreeSelectionListener;
 import catalogcomponent.dataelements.Group;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import javax.swing.tree.TreeSelectionModel;
 import java.util.ArrayList;
 import java.awt.*;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UniTree {
@@ -27,6 +29,7 @@ public class UniTree {
     private ArrayList<Group> content;
     private ElementsComparator elementsComparator;
 
+    private List<UniTreeSelectionListener> listenersList;
     private Group selectedGroup;
 
     private class ElementsComparator implements Comparator<Group> {
@@ -115,6 +118,7 @@ public class UniTree {
 
     public UniTree() {
         content = new ArrayList<>();
+        listenersList = new LinkedList<>();
         selectedGroup = null;
         elementsComparator = new ElementsComparator();
 
@@ -152,6 +156,14 @@ public class UniTree {
         return selectedGroup;
     }
 
+    public void addUniTreeSelectionListener(UniTreeSelectionListener listener) {
+        listenersList.add(listener);
+    }
+
+    public void removeUniTreeSelectionListener(UniTreeSelectionListener listener) {
+        listenersList.remove(listener);
+    }
+
     private TreeSelectionListener selectionListener = new TreeSelectionListener() {
         @Override
         public void valueChanged(TreeSelectionEvent e) {
@@ -160,6 +172,9 @@ public class UniTree {
             }
             selectedGroup = (Group) e.getNewLeadSelectionPath().getLastPathComponent();
             selectedItemLab.setText(selectedGroup.toString());
+            for (UniTreeSelectionListener listener : listenersList) {
+                listener.groupSelection(selectedGroup);
+            }
         }
     };
 

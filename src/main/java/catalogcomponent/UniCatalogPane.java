@@ -1,17 +1,22 @@
 package catalogcomponent;
 
+import catalogcomponent.Listeners.UniTreeSelectionListener;
 import catalogcomponent.dataelements.GroupDataElement;
 import catalogcomponent.dataelements.Group;
 import catalogcomponent.filters.Filter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.List;
 
-public class UniCatalogPane {
+public class UniCatalogPane implements UniTreeSelectionListener {
 
     private UniTree uniTree;
     private UniTable uniTable;
+
+    private List<Group> treeContent;
+    private List<? extends GroupDataElement> tableContent;
 
     private JPanel contentPane;
 
@@ -23,12 +28,14 @@ public class UniCatalogPane {
         contentPane.setLayout(new BorderLayout(5, 5));
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setResizeWeight(0.4);
+        splitPane.setResizeWeight(0.3);
         splitPane.setDividerSize(3);
         splitPane.add(uniTree.getVisualComponent(), JSplitPane.LEFT);
         splitPane.add(uniTable.getVisualComponent(), JSplitPane.RIGHT);
 
         contentPane.add(splitPane, BorderLayout.CENTER);
+
+        uniTree.addUniTreeSelectionListener(this);
     }
 
     public JPanel getVisualComponent() {
@@ -36,8 +43,21 @@ public class UniCatalogPane {
     }
 
     public void setContent(List<Group> groupList, List<? extends GroupDataElement> elementList) {
-        uniTree.setContent(groupList);
-        uniTable.setContent(elementList);
+        treeContent = groupList;
+        tableContent = elementList;
+        uniTree.setContent(treeContent);
+        uniTable.setContent(null);
+    }
+
+    @Override
+    public void groupSelection(Group selectedGroup) {
+        List<GroupDataElement> groupContent = new LinkedList<>();
+        for (GroupDataElement element : tableContent) {
+            if (element.getGroupId() == selectedGroup.getId()) {
+                groupContent.add(element);
+            }
+        }
+        uniTable.setContent(groupContent);
     }
 
 }

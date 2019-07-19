@@ -206,7 +206,9 @@ public class UniTable {
 
     public void setContent(List<? extends DataElement> elementList) {
         content.clear();
-        content.addAll(elementList);
+        if (elementList != null) {
+            content.addAll(elementList);
+        }
         refresh();
     }
 
