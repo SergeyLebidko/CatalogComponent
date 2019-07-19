@@ -4,17 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <bean id="gui" class="catalogcomponent.GUI" init-method="showGui">
-        <property name="uniTree" ref="uniTree"/>
+    <bean id="gui" class="catalogcomponent.GUI">
         <property name="actionHandler" ref="actionHandler"/>
     </bean>
 
     <bean id="actionHandler" class="catalogcomponent.ActionHandler">
         <property name="catalogDAO" ref="catalogDAO"/>
-        <property name="uniTree" ref="uniTree"/>
     </bean>
-
-    <bean id="uniTree" class="catalogcomponent.UniTree"/>
 
     <bean id="catalogDAO" class="catalogcomponent.dataaccess.CatalogDAO">
         <constructor-arg ref="jdbcTemplate"/>

@@ -15,7 +15,7 @@ public class GUI {
     private JButton showCatalogBtn;
 
     private ActionHandler actionHandler;
-    private UniTree uniTree;
+    private UniCatalogPane uniCatalogPane;
 
     public GUI() {
         frm = new JFrame("UniTree");
@@ -54,9 +54,9 @@ public class GUI {
         });
     }
 
-    public void setUniTree(UniTree uniTree) {
-        this.uniTree = uniTree;
-        frm.getContentPane().add(uniTree.getVisualComponent(), BorderLayout.CENTER);
+    public void setUniCatalogPane(UniCatalogPane uniCatalogPane) {
+        this.uniCatalogPane = uniCatalogPane;
+        frm.getContentPane().add(uniCatalogPane.getVisualComponent(), BorderLayout.CENTER);
     }
 
     public void setActionHandler(ActionHandler actionHandler) {

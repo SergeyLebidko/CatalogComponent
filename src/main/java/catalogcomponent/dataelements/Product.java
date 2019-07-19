@@ -1,7 +1,7 @@
 package catalogcomponent.dataelements;
 
-@Description(columnNames = {"Номер", "Наименование", "Характеристики", "Состояние", "Цена", "Количество"})
-public class GroupDataItem implements GroupDataElement {
+@DataDescription(columnNames = {"Номер", "Наименование", "Характеристики", "Состояние", "Цена", "Количество"})
+public class Product implements GroupDataElement {
 
     private int groupId;
 
@@ -12,7 +12,7 @@ public class GroupDataItem implements GroupDataElement {
     private int price;
     private int count;
 
-    public GroupDataItem(int groupId, int id, String name, String specification, String state, int price, int count) {
+    public Product(int groupId, int id, String name, String specification, String state, int price, int count) {
         this.groupId = groupId;
         this.id = id;
         this.name = name;

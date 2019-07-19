@@ -1,6 +1,6 @@
 package catalogcomponent;
 
-import catalogcomponent.dataelements.GroupElement;
+import catalogcomponent.dataelements.Group;
 
 import javax.swing.*;
 import javax.swing.event.TreeModelListener;
@@ -16,21 +16,23 @@ import java.util.List;
 
 public class UniTree {
 
+    private static final Font mainFont = new Font(null, Font.PLAIN, 14);
+
     private JPanel contentPane;
     private JLabel selectedItemLab;
 
     private JTree tree;
     private Model model;
 
-    private ArrayList<GroupElement> content;
+    private ArrayList<Group> content;
     private ElementsComparator elementsComparator;
 
-    private GroupElement selectedElement;
+    private Group selectedGroup;
 
-    private class ElementsComparator implements Comparator<GroupElement> {
+    private class ElementsComparator implements Comparator<Group> {
 
         @Override
-        public int compare(GroupElement o1, GroupElement o2) {
+        public int compare(Group o1, Group o2) {
             return o1.getName().compareTo(o2.getName());
         }
 
@@ -74,23 +76,23 @@ public class UniTree {
 
         //Возвращает true, если node2 является потомком для node1
         private boolean isChild(Object node1, Object node2) {
-            GroupElement element1 = (GroupElement) node1;
-            GroupElement element2 = (GroupElement) node2;
+            Group element1 = (Group) node1;
+            Group element2 = (Group) node2;
             if (element2.getParentId() == null) return false;
             return element2.getParentId().equals(element1.getId());
         }
 
         //Возвращает true, если узел является корневым
         private boolean isRoot(Object node) {
-            return ((GroupElement) node).getParentId() == null;
+            return ((Group) node).getParentId() == null;
         }
 
         //Возвращает отсортированный по возрастанию список потомков данного узла
-        private ArrayList<GroupElement> getChildList(Object parent) {
-            ArrayList<GroupElement> childsList = new ArrayList<>();
+        private ArrayList<Group> getChildList(Object parent) {
+            ArrayList<Group> childsList = new ArrayList<>();
             for (Object element : content) {
                 if (isChild(parent, element)) {
-                    childsList.add((GroupElement) element);
+                    childsList.add((Group) element);
                 }
             }
             childsList.sort(elementsComparator);
@@ -113,7 +115,7 @@ public class UniTree {
 
     public UniTree() {
         content = new ArrayList<>();
-        selectedElement = null;
+        selectedGroup = null;
         elementsComparator = new ElementsComparator();
 
         contentPane = new JPanel();
@@ -127,16 +129,16 @@ public class UniTree {
 
         tree.setRootVisible(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tree.setFont(new Font(null, Font.PLAIN, 14));
+        tree.setFont(mainFont);
 
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                if (e.getNewLeadSelectionPath()==null){
+                if (e.getNewLeadSelectionPath() == null) {
                     return;
                 }
-                selectedElement = (GroupElement)e.getNewLeadSelectionPath().getLastPathComponent();
-                selectedItemLab.setText(selectedElement.toString());
+                selectedGroup = (Group) e.getNewLeadSelectionPath().getLastPathComponent();
+                selectedItemLab.setText(selectedGroup.toString());
             }
         });
 
@@ -147,16 +149,16 @@ public class UniTree {
         return contentPane;
     }
 
-    public void setContent(List<GroupElement> list) {
+    public void setContent(List<Group> groupList) {
         content.clear();
-        content.addAll(list);
+        content.addAll(groupList);
 
         tree.updateUI();
         tree.expandRow(0);
     }
 
-    public GroupElement getSelectedElement(){
-        return selectedElement;
+    public Group getSelectedGroup() {
+        return selectedGroup;
     }
 
 }

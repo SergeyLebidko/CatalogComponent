@@ -1,12 +1,12 @@
 package catalogcomponent.dataelements;
 
-public class GroupElement {
+public class Group {
 
     private int id;
     private Integer parentId;
     private String name;
 
-    public GroupElement(int id, Integer parentId, String name) {
+    public Group(int id, Integer parentId, String name) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;

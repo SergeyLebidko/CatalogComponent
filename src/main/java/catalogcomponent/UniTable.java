@@ -1,7 +1,7 @@
 package catalogcomponent;
 
 import catalogcomponent.dataelements.DataElement;
-import catalogcomponent.dataelements.Description;
+import catalogcomponent.dataelements.DataDescription;
 import catalogcomponent.filters.Filter;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ public class UniTable {
     private static final Color headerColor = new Color(230, 230, 230);
     private static final Color evenCellsColor = new Color(240, 240, 240);
     private static final Color notEvenCellsColor = new Color(255, 255, 255);
-    private static final Font mainFont = new Font("Arial", Font.PLAIN, 16);
+    private static final Font mainFont = new Font(null, Font.PLAIN, 14);
 
     private static final int TO_UP = 1;
     private static final int TO_DOWN = -1;
@@ -152,7 +152,7 @@ public class UniTable {
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout(5, 5));
 
-        Description descriptionAnno = dataClass.getAnnotation(Description.class);
+        DataDescription descriptionAnno = dataClass.getAnnotation(DataDescription.class);
         String[] columnNames = descriptionAnno.columnNames();
 
         model = new Model(columnNames);
@@ -204,9 +204,9 @@ public class UniTable {
         return contentPane;
     }
 
-    public void setContent(List<? extends DataElement> list) {
+    public void setContent(List<? extends DataElement> elementList) {
         content.clear();
-        content.addAll(list);
+        content.addAll(elementList);
         refresh();
     }
 
