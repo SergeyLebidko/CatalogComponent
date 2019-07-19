@@ -1,6 +1,6 @@
 package catalogcomponent.dataaccess;
 
-import catalogcomponent.dataelements.TreeElement;
+import catalogcomponent.dataelements.GroupElement;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -16,18 +16,18 @@ public class CatalogDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<TreeElement> getTreeElementList() {
-        RowMapper<TreeElement> rowMapper = new RowMapper<TreeElement>() {
+    public List<GroupElement> getTreeElementList() {
+        RowMapper<GroupElement> rowMapper = new RowMapper<GroupElement>() {
             @Override
-            public TreeElement mapRow(ResultSet resultSet, int i) throws SQLException {
+            public GroupElement mapRow(ResultSet resultSet, int i) throws SQLException {
                 int id = resultSet.getInt(1);
                 Integer parentId = resultSet.getInt(2);
                 if (resultSet.wasNull()) parentId = null;
                 String name = resultSet.getString(3);
-                return new TreeElement(id, parentId, name);
+                return new GroupElement(id, parentId, name);
             }
         };
-        List<TreeElement> list = jdbcTemplate.query("SELECT * FROM GROUPS", rowMapper);
+        List<GroupElement> list = jdbcTemplate.query("SELECT * FROM GROUPS", rowMapper);
         return list;
     }
 

@@ -1,7 +1,7 @@
 package catalogcomponent;
 
 import catalogcomponent.dataaccess.CatalogDAO;
-import catalogcomponent.dataelements.TreeElement;
+import catalogcomponent.dataelements.GroupElement;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class ActionHandler {
     }
 
     public void showCatalog() {
-        List<TreeElement> list = catalogDAO.getTreeElementList();
+        List<GroupElement> list = catalogDAO.getTreeElementList();
         uniTree.setContent(list);
     }
 

@@ -1,6 +1,6 @@
 package catalogcomponent;
 
-import catalogcomponent.dataelements.TreeElement;
+import catalogcomponent.dataelements.GroupElement;
 
 import javax.swing.*;
 import javax.swing.event.TreeModelListener;
@@ -22,15 +22,15 @@ public class UniTree {
     private JTree tree;
     private Model model;
 
-    private ArrayList<TreeElement> content;
+    private ArrayList<GroupElement> content;
     private ElementsComparator elementsComparator;
 
-    private TreeElement selectedElement;
+    private GroupElement selectedElement;
 
-    private class ElementsComparator implements Comparator<TreeElement> {
+    private class ElementsComparator implements Comparator<GroupElement> {
 
         @Override
-        public int compare(TreeElement o1, TreeElement o2) {
+        public int compare(GroupElement o1, GroupElement o2) {
             return o1.getName().compareTo(o2.getName());
         }
 
@@ -74,23 +74,23 @@ public class UniTree {
 
         //Возвращает true, если node2 является потомком для node1
         private boolean isChild(Object node1, Object node2) {
-            TreeElement element1 = (TreeElement) node1;
-            TreeElement element2 = (TreeElement) node2;
+            GroupElement element1 = (GroupElement) node1;
+            GroupElement element2 = (GroupElement) node2;
             if (element2.getParentId() == null) return false;
             return element2.getParentId().equals(element1.getId());
         }
 
         //Возвращает true, если узел является корневым
         private boolean isRoot(Object node) {
-            return ((TreeElement) node).getParentId() == null;
+            return ((GroupElement) node).getParentId() == null;
         }
 
         //Возвращает отсортированный по возрастанию список потомков данного узла
-        private ArrayList<TreeElement> getChildList(Object parent) {
-            ArrayList<TreeElement> childsList = new ArrayList<>();
+        private ArrayList<GroupElement> getChildList(Object parent) {
+            ArrayList<GroupElement> childsList = new ArrayList<>();
             for (Object element : content) {
                 if (isChild(parent, element)) {
-                    childsList.add((TreeElement) element);
+                    childsList.add((GroupElement) element);
                 }
             }
             childsList.sort(elementsComparator);
@@ -135,7 +135,7 @@ public class UniTree {
                 if (e.getNewLeadSelectionPath()==null){
                     return;
                 }
-                selectedElement = (TreeElement)e.getNewLeadSelectionPath().getLastPathComponent();
+                selectedElement = (GroupElement)e.getNewLeadSelectionPath().getLastPathComponent();
                 selectedItemLab.setText(selectedElement.toString());
             }
         });
@@ -147,7 +147,7 @@ public class UniTree {
         return contentPane;
     }
 
-    public void setContent(List<TreeElement> list) {
+    public void setContent(List<GroupElement> list) {
         content.clear();
         content.addAll(list);
 
@@ -155,7 +155,7 @@ public class UniTree {
         tree.expandRow(0);
     }
 
-    public TreeElement getSelectedElement(){
+    public GroupElement getSelectedElement(){
         return selectedElement;
     }
 
