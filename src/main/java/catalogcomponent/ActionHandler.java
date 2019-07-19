@@ -2,6 +2,7 @@ package catalogcomponent;
 
 import catalogcomponent.dataaccess.CatalogDAO;
 import catalogcomponent.dataelements.Group;
+import catalogcomponent.dataelements.Product;
 
 import java.util.List;
 
@@ -22,8 +23,9 @@ public class ActionHandler {
     }
 
     public void showCatalog() {
-        List<Group> groupList = catalogDAO.getTreeElementList();
-        uniCatalogPane.setContent(groupList, null);
+        List<Group> groupList = catalogDAO.getGroupList();
+        List<Product> productList = catalogDAO.getProductList();
+        uniCatalogPane.setContent(groupList, productList);
     }
 
 }
