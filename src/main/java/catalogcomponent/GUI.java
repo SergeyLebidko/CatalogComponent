@@ -7,12 +7,20 @@ import java.awt.event.ActionListener;
 
 public class GUI {
 
-    private static final int WIDTH = 1200;
-    private static final int HEIGHT = 800;
+    private static final int WIDTH = 1300;
+    private static final int HEIGHT = 900;
 
     private JFrame frm;
 
     private JButton showCatalogBtn;
+
+    private JButton addGroupBtn;
+    private JButton editGroupBtn;
+    private JButton removeGroupBtn;
+
+    private JButton addElementBtn;
+    private JButton editElementBtn;
+    private JButton removeElementBtn;
 
     private ActionHandler actionHandler;
     private UniTree uniTree;
@@ -32,7 +40,22 @@ public class GUI {
         toolPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         showCatalogBtn = new JButton("Получить данные из БД");
+        addGroupBtn = new JButton("Добавить группу");
+        editGroupBtn = new JButton("Переименовать группу");
+        removeGroupBtn = new JButton("Удалить группу");
+        addElementBtn = new JButton("Добавить элемент в группу");
+        editElementBtn = new JButton("Переименовать элемент");
+        removeElementBtn = new JButton("Удалить элемент");
+
         toolPane.add(showCatalogBtn);
+        toolPane.add(Box.createHorizontalStrut(15));
+        toolPane.add(addGroupBtn);
+        toolPane.add(editGroupBtn);
+        toolPane.add(removeGroupBtn);
+        toolPane.add(Box.createHorizontalStrut(15));
+        toolPane.add(addElementBtn);
+        toolPane.add(editElementBtn);
+        toolPane.add(removeElementBtn);
 
         showCatalogBtn.addActionListener(new ActionListener() {
             @Override
