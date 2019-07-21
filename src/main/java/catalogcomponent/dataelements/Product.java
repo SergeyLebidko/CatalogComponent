@@ -1,5 +1,7 @@
 package catalogcomponent.dataelements;
 
+import java.util.Objects;
+
 @DataDescription(columnNames = {"Номер", "Наименование", "Характеристики", "Состояние", "Цена", "Количество"})
 public class Product implements GroupDataElement {
 
@@ -36,6 +38,14 @@ public class Product implements GroupDataElement {
         if (fieldIndex == 4) return price;
         if (fieldIndex == 5) return count;
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
     }
 
 }

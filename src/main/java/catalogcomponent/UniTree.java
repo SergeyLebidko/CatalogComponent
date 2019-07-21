@@ -1,7 +1,9 @@
 package catalogcomponent;
 
-import catalogcomponent.Listeners.UniTreeSelectionListener;
+import catalogcomponent.dataelements.DataElement;
 import catalogcomponent.dataelements.Group;
+import catalogcomponent.dataelements.GroupDataElement;
+import catalogcomponent.filters.Filter;
 
 import javax.swing.*;
 import javax.swing.event.TreeModelListener;
@@ -21,18 +23,20 @@ public class UniTree {
     private static final Font mainFont = new Font(null, Font.PLAIN, 14);
 
     private JPanel contentPane;
+
     private JLabel selectedItemLab;
+    private Group selectedGroup;
 
     private JTree tree;
     private Model model;
+    private UniTable table;
 
-    private ArrayList<Group> content;
-    private ElementsComparator elementsComparator;
+    private ArrayList<Group> treeContent;
+    private ArrayList<GroupDataElement> tableContent;
 
-    private List<UniTreeSelectionListener> listenersList;
-    private Group selectedGroup;
+    private TreeElementsComparator treeElementsComparator;
 
-    private class ElementsComparator implements Comparator<Group> {
+    private class TreeElementsComparator implements Comparator<Group> {
 
         @Override
         public int compare(Group o1, Group o2) {
@@ -45,7 +49,7 @@ public class UniTree {
 
         @Override
         public Object getRoot() {
-            for (Object element : content) {
+            for (Object element : treeContent) {
                 if (isRoot(element)) return element;
             }
             return null;
@@ -93,12 +97,12 @@ public class UniTree {
         //Возвращает отсортированный по возрастанию список потомков данного узла
         private ArrayList<Group> getChildList(Object parent) {
             ArrayList<Group> childsList = new ArrayList<>();
-            for (Object element : content) {
+            for (Object element : treeContent) {
                 if (isChild(parent, element)) {
                     childsList.add((Group) element);
                 }
             }
-            childsList.sort(elementsComparator);
+            childsList.sort(treeElementsComparator);
             return childsList;
         }
 
@@ -116,17 +120,21 @@ public class UniTree {
 
     }
 
-    public UniTree() {
-        content = new ArrayList<>();
-        listenersList = new LinkedList<>();
+    public UniTree(Class<? extends GroupDataElement> tableDataClass, Filter tableDataFilter) {
+        treeContent = new ArrayList<>();
+        tableContent = new ArrayList<>();
+        table = new UniTable(tableDataClass, tableDataFilter);
         selectedGroup = null;
-        elementsComparator = new ElementsComparator();
+        treeElementsComparator = new TreeElementsComparator();
 
         contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout(5, 5));
 
+        JPanel treePane = new JPanel();
+        treePane.setLayout(new BorderLayout(5, 5));
+
         selectedItemLab = new JLabel("");
-        contentPane.add(selectedItemLab, BorderLayout.NORTH);
+        treePane.add(selectedItemLab, BorderLayout.NORTH);
 
         model = new Model();
         tree = new JTree(model);
@@ -137,31 +145,39 @@ public class UniTree {
 
         tree.addTreeSelectionListener(selectionListener);
 
-        contentPane.add(new JScrollPane(tree), BorderLayout.CENTER);
+        treePane.add(new JScrollPane(tree), BorderLayout.CENTER);
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        splitPane.setResizeWeight(0.3);
+        splitPane.setDividerSize(3);
+        splitPane.add(treePane, JSplitPane.LEFT);
+        splitPane.add(table.getVisualComponent(), JSplitPane.RIGHT);
+
+        contentPane.add(splitPane, BorderLayout.CENTER);
     }
 
     public JPanel getVisualComponent() {
         return contentPane;
     }
 
-    public void setContent(List<Group> groupList) {
-        content.clear();
-        content.addAll(groupList);
+    public void setContent(List<Group> groupList, List<? extends GroupDataElement> elementList) {
+        treeContent.clear();
+        tableContent.clear();
+
+        treeContent.addAll(groupList);
+        tableContent.addAll(elementList);
 
         tree.updateUI();
         tree.expandRow(0);
+        table.clear();
     }
 
     public Group getSelectedGroup() {
         return selectedGroup;
     }
 
-    public void addUniTreeSelectionListener(UniTreeSelectionListener listener) {
-        listenersList.add(listener);
-    }
-
-    public void removeUniTreeSelectionListener(UniTreeSelectionListener listener) {
-        listenersList.remove(listener);
+    public GroupDataElement getSelectedElement(){
+        return (GroupDataElement) table.getSelectedElement();
     }
 
     private TreeSelectionListener selectionListener = new TreeSelectionListener() {
@@ -172,9 +188,14 @@ public class UniTree {
             }
             selectedGroup = (Group) e.getNewLeadSelectionPath().getLastPathComponent();
             selectedItemLab.setText(selectedGroup.toString());
-            for (UniTreeSelectionListener listener : listenersList) {
-                listener.groupSelection(selectedGroup);
+
+            List<GroupDataElement> groupContent = new LinkedList<>();
+            for (GroupDataElement element : tableContent) {
+                if (element.getGroupId() == selectedGroup.getId()) {
+                    groupContent.add(element);
+                }
             }
+            table.setContent(groupContent);
         }
     };
 

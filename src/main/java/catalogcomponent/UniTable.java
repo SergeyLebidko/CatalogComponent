@@ -206,14 +206,17 @@ public class UniTable {
 
     public void setContent(List<? extends DataElement> elementList) {
         content.clear();
-        if (elementList != null) {
-            content.addAll(elementList);
-        }
+        content.addAll(elementList);
         refresh();
     }
 
     public void refresh() {
         model.refresh();
+    }
+
+    public void clear() {
+        content.clear();
+        refresh();
     }
 
     public DataElement getSelectedElement() {

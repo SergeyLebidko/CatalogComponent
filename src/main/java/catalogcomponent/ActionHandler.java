@@ -9,23 +9,20 @@ import java.util.List;
 public class ActionHandler {
 
     private CatalogDAO catalogDAO;
-    private UniCatalogPane uniCatalogPane;
-
-    public ActionHandler() {
-    }
+    private UniTree uniTree;
 
     public void setCatalogDAO(CatalogDAO catalogDAO) {
         this.catalogDAO = catalogDAO;
     }
 
-    public void setUniCatalogPane(UniCatalogPane uniCatalogPane) {
-        this.uniCatalogPane = uniCatalogPane;
+    public void setUniTree(UniTree uniTree) {
+        this.uniTree = uniTree;
     }
 
     public void showCatalog() {
         List<Group> groupList = catalogDAO.getGroupList();
         List<Product> productList = catalogDAO.getProductList();
-        uniCatalogPane.setContent(groupList, productList);
+        uniTree.setContent(groupList, productList);
     }
 
 }

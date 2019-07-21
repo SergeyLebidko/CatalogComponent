@@ -12,9 +12,9 @@ public class MainClass {
         GUI gui = (GUI) context.getBean("gui");
         ActionHandler actionHandler = (ActionHandler) context.getBean("actionHandler");
 
-        UniCatalogPane uniCatalogPane = new UniCatalogPane(Product.class, null);
-        gui.setUniCatalogPane(uniCatalogPane);
-        actionHandler.setUniCatalogPane(uniCatalogPane);
+        UniTree uniTree = new UniTree(Product.class, null);
+        gui.setUniTree(uniTree);
+        actionHandler.setUniTree(uniTree);
 
         gui.showGui();
 
