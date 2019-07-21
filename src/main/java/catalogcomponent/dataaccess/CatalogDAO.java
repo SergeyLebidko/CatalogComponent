@@ -32,7 +32,7 @@ public class CatalogDAO {
         return list;
     }
 
-    public List<Product> getProductList(){
+    public List<Product> getProductList() {
         RowMapper<Product> rowMapper = new RowMapper<Product>() {
             @Override
             public Product mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -48,6 +48,22 @@ public class CatalogDAO {
         };
         List<Product> list = jdbcTemplate.query("SELECT * FROM ITEMS", rowMapper);
         return list;
+    }
+
+    public int getNextGroupId() {
+        int res = jdbcTemplate.queryForObject("SELECT MAX(ID) FROM GROUPS", Integer.class) + 1;
+        return res;
+    }
+
+    public void addGroup(Group group) {
+        jdbcTemplate.update("INSERT INTO GROUPS (ID, PARENT_ID, NAME) VALUES(?,?,?)",
+                group.getId(),
+                group.getParentId(),
+                group.getName());
+    }
+
+    public void editGroup(int id, String name) {
+        jdbcTemplate.update("UPDATE GROUPS SET NAME=? WHERE ID=?", name, id);
     }
 
 }

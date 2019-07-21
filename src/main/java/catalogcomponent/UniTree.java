@@ -172,12 +172,81 @@ public class UniTree {
         table.clear();
     }
 
+    public void addGroup(Group group) {
+        if (treeContent.size() == 0) return;
+        treeContent.add(group);
+        tree.updateUI();
+    }
+
+    public void editGroup(int id, String name) {
+        int i = -1;
+        for (Group group : treeContent) {
+            i++;
+            if (group.getId() == id) break;
+        }
+        if (i == (-1)) return;
+        treeContent.get(i).setName(name);
+        tree.updateUI();
+        tree.expandRow(0);
+    }
+
+    public void removeGroup(int id) {
+        if (treeContent.size() == 0) return;
+        recursiveRemoveGroup(id);
+
+        //Удаляем все элементы таблицы данных, не связанные более ни с одной группой
+        boolean findParent;
+        for (int i = 0; i < tableContent.size(); i++) {
+            findParent = false;
+
+            for (Group group : treeContent) {
+                if (tableContent.get(i).getGroupId() == group.getId()) {
+                    findParent = true;
+                    break;
+                }
+            }
+
+            if (findParent) continue;
+            tableContent.remove(i);
+            i--;
+        }
+
+        selectedItemLab.setText("");
+        selectedGroup = null;
+
+        tree.updateUI();
+        table.clear();
+    }
+
     public Group getSelectedGroup() {
         return selectedGroup;
     }
 
-    public GroupDataElement getSelectedElement(){
+    public GroupDataElement getSelectedElement() {
         return (GroupDataElement) table.getSelectedElement();
+    }
+
+    private void recursiveRemoveGroup(int id) {
+        //Получаем список подгрупп
+        List<Integer> subGroupsId = new LinkedList<>();
+        for (Group group : treeContent) {
+            if (group.getParentId() != null && group.getParentId() == id) {
+                subGroupsId.add(group.getId());
+            }
+        }
+
+        //Сперва удаляем все подгруппы
+        for (Integer subGroupId : subGroupsId) {
+            removeGroup(subGroupId);
+        }
+
+        //Теперь удаляем группу с переданным id
+        for (int i = 0; i < treeContent.size(); i++) {
+            if (treeContent.get(i).getId() == id) {
+                treeContent.remove(i);
+                return;
+            }
+        }
     }
 
     private TreeSelectionListener selectionListener = new TreeSelectionListener() {

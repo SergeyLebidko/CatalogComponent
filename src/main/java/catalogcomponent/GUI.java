@@ -64,6 +64,27 @@ public class GUI {
             }
         });
 
+        addGroupBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actionHandler.addGroup();
+            }
+        });
+
+        editGroupBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actionHandler.editGroup();
+            }
+        });
+
+        removeGroupBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actionHandler.removeGroup();
+            }
+        });
+
         contentPane.add(toolPane, BorderLayout.NORTH);
         frm.setContentPane(contentPane);
     }

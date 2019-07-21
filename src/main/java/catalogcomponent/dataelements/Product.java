@@ -1,7 +1,5 @@
 package catalogcomponent.dataelements;
 
-import java.util.Objects;
-
 @DataDescription(columnNames = {"Номер", "Наименование", "Характеристики", "Состояние", "Цена", "Количество"})
 public class Product implements GroupDataElement {
 
