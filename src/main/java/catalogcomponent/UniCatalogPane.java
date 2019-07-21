@@ -7,6 +7,7 @@ import catalogcomponent.filters.Filter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,12 +16,15 @@ public class UniCatalogPane implements UniTreeSelectionListener {
     private UniTree uniTree;
     private UniTable uniTable;
 
-    private List<Group> treeContent;
-    private List<? extends GroupDataElement> tableContent;
+    private ArrayList<Group> treeContent;
+    private ArrayList<GroupDataElement> tableContent;
 
     private JPanel contentPane;
 
     public UniCatalogPane(Class<? extends GroupDataElement> uniTableClass, Filter filter) {
+        treeContent = new ArrayList<>();
+        tableContent = new ArrayList<>();
+
         uniTree = new UniTree();
         uniTable = new UniTable(uniTableClass, filter);
 
@@ -43,8 +47,12 @@ public class UniCatalogPane implements UniTreeSelectionListener {
     }
 
     public void setContent(List<Group> groupList, List<? extends GroupDataElement> elementList) {
-        treeContent = groupList;
-        tableContent = elementList;
+        treeContent.clear();
+        tableContent.clear();
+        if (groupList!=null & elementList!=null){
+            treeContent.addAll(groupList);
+            tableContent.addAll(elementList);
+        }
         uniTree.setContent(treeContent);
         uniTable.setContent(null);
     }

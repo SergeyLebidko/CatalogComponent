@@ -31,7 +31,7 @@ public class GUI {
         JPanel toolPane = new JPanel();
         toolPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        showCatalogBtn = new JButton("Показать каталог");
+        showCatalogBtn = new JButton("Получить данные из БД");
         toolPane.add(showCatalogBtn);
 
         showCatalogBtn.addActionListener(new ActionListener() {
