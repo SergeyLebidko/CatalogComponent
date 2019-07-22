@@ -173,7 +173,9 @@ public class UniTree {
     }
 
     public void addGroup(Group group) {
+        //Нельзя добавить группу в пустой список групп
         if (treeContent.size() == 0) return;
+
         treeContent.add(group);
         tree.updateUI();
     }
@@ -186,12 +188,19 @@ public class UniTree {
         }
         if (i == (-1)) return;
         treeContent.get(i).setName(name);
+
+        selectedGroup = treeContent.get(i);
+        selectedItemLab.setText(selectedGroup.getName());
+
         tree.updateUI();
         tree.expandRow(0);
     }
 
     public void removeGroup(int id) {
+        //Нельзя удалить группу из пустого списка
         if (treeContent.size() == 0) return;
+
+        //Рекурсивно удаляем группу и все ее подгруппы
         recursiveRemoveGroup(id);
 
         //Удаляем все элементы таблицы данных, не связанные более ни с одной группой

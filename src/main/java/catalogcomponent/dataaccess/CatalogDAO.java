@@ -28,8 +28,7 @@ public class CatalogDAO {
                 return new Group(id, parentId, name);
             }
         };
-        List<Group> list = jdbcTemplate.query("SELECT * FROM GROUPS", rowMapper);
-        return list;
+        return jdbcTemplate.query("SELECT * FROM GROUPS", rowMapper);
     }
 
     public List<Product> getProductList() {
@@ -46,13 +45,11 @@ public class CatalogDAO {
                 return new Product(groupId, id, name, specification, state, price, count);
             }
         };
-        List<Product> list = jdbcTemplate.query("SELECT * FROM ITEMS", rowMapper);
-        return list;
+        return jdbcTemplate.query("SELECT * FROM ITEMS", rowMapper);
     }
 
     public int getNextGroupId() {
-        int res = jdbcTemplate.queryForObject("SELECT MAX(ID) FROM GROUPS", Integer.class) + 1;
-        return res;
+        return jdbcTemplate.queryForObject("SELECT MAX(ID) FROM GROUPS", Integer.class) + 1;
     }
 
     public void addGroup(Group group) {
@@ -64,6 +61,29 @@ public class CatalogDAO {
 
     public void editGroup(int id, String name) {
         jdbcTemplate.update("UPDATE GROUPS SET NAME=? WHERE ID=?", name, id);
+    }
+
+    public void removeGroup(int id) {
+        //Получаем список подгрупп
+        List<Integer> subGroupsList = jdbcTemplate.queryForList("SELECT ID FROM GROUPS WHERE PARENT_ID=?",
+                new Object[]{id},
+                Integer.class);
+
+        //Удаляем все подгруппы
+        for (Integer subGroupId : subGroupsList) {
+            removeGroup(subGroupId);
+        }
+
+        //Удаляем переданную группу
+        jdbcTemplate.update("DELETE FROM GROUPS WHERE ID=?", id);
+
+        //Удаляем все элементы этой группы
+        jdbcTemplate.update("DELETE FROM ITEMS WHERE GROUP_ID=?", id);
+    }
+
+    public boolean isRootGroup(int id) {
+        int rootGroupId = jdbcTemplate.queryForObject("SELECT ID FROM GROUPS WHERE PARENT_ID is NULL", Integer.class);
+        return rootGroupId == id;
     }
 
 }

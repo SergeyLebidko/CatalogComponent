@@ -37,34 +37,33 @@ public class ActionHandler {
 
         Group group = new Group(id, parentId, name);
         catalogDAO.addGroup(group);
-
         uniTree.addGroup(group);
     }
 
     public void editGroup() {
         Group selectedGroup = uniTree.getSelectedGroup();
         if (selectedGroup == null) return;
+        if (catalogDAO.isRootGroup(selectedGroup.getId())) return;
 
         String name = showInputNameDialog(selectedGroup.getName());
         if (name == null) return;
         int id = selectedGroup.getId();
 
         catalogDAO.editGroup(id, name);
-
         uniTree.editGroup(id, name);
     }
 
-    public void removeGroup(){
+    public void removeGroup() {
         Group selectedGroup = uniTree.getSelectedGroup();
         if (selectedGroup == null) return;
+        if (catalogDAO.isRootGroup(selectedGroup.getId())) return;
 
-        //Удаление группы из базы данных
-
+        catalogDAO.removeGroup(selectedGroup.getId());
         uniTree.removeGroup(selectedGroup.getId());
     }
 
     private String showInputNameDialog(String startText) {
-        String str = "";
+        String str;
         while (true) {
             str = JOptionPane.showInputDialog(null, "", startText);
             if (str == null) return null;
