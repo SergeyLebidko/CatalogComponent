@@ -52,6 +52,10 @@ public class CatalogDAO {
         return jdbcTemplate.queryForObject("SELECT MAX(ID) FROM GROUPS", Integer.class) + 1;
     }
 
+    public int getNextProductId() {
+        return jdbcTemplate.queryForObject("SELECT MAX(ID) FROM ITEMS", Integer.class) + 1;
+    }
+
     public void addGroup(Group group) {
         jdbcTemplate.update("INSERT INTO GROUPS (ID, PARENT_ID, NAME) VALUES(?,?,?)",
                 group.getId(),
@@ -79,6 +83,17 @@ public class CatalogDAO {
 
         //Удаляем все элементы этой группы
         jdbcTemplate.update("DELETE FROM ITEMS WHERE GROUP_ID=?", id);
+    }
+
+    public void addProduct(Product product) {
+        jdbcTemplate.update("INSERT INTO ITEMS (GROUP_ID, ID, NAME, SPECIFICATION, STATE, PRICE, COUNT) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                product.getGroupId(),
+                product.getField(0),
+                product.getField(1),
+                product.getField(2),
+                product.getField(3),
+                product.getField(4),
+                product.getField(5));
     }
 
     public boolean isRootGroup(int id) {

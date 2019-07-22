@@ -66,8 +66,23 @@ public class ActionHandler {
     }
 
     public void addElement() {
-        showInputProductDialog();
-        //Вставить код
+        Group selectedGroup = uniTree.getSelectedGroup();
+        if (selectedGroup == null) return;
+
+        Map<String, Object> map = showInputProductDialog();
+        if (map == null) return;
+
+        int groupId = selectedGroup.getId();
+        int id = catalogDAO.getNextProductId();
+        String name = (String) map.get("name");
+        String specification = (String) map.get("specification");
+        String state = (String) map.get("state");
+        Integer price = (Integer) map.get("price");
+        Integer count = (Integer) map.get("count");
+        Product product = new Product(groupId, id, name, specification, state, price, count);
+
+        catalogDAO.addProduct(product);
+        uniTree.addElement(product);
     }
 
     public void editElement() {

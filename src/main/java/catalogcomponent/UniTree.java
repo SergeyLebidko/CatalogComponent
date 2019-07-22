@@ -1,6 +1,5 @@
 package catalogcomponent;
 
-import catalogcomponent.dataelements.DataElement;
 import catalogcomponent.dataelements.Group;
 import catalogcomponent.dataelements.GroupDataElement;
 import catalogcomponent.filters.Filter;
@@ -227,6 +226,14 @@ public class UniTree {
         table.clear();
     }
 
+    public void addElement(GroupDataElement element) {
+        //Нельзя добавить элемент в список элементов, если пуст список групп
+        if (treeContent.size() == 0) return;
+
+        tableContent.add(element);
+        refreshCurrentTableContent();
+    }
+
     public Group getSelectedGroup() {
         return selectedGroup;
     }
@@ -258,6 +265,16 @@ public class UniTree {
         }
     }
 
+    private void refreshCurrentTableContent() {
+        List<GroupDataElement> groupContent = new LinkedList<>();
+        for (GroupDataElement element : tableContent) {
+            if (element.getGroupId() == selectedGroup.getId()) {
+                groupContent.add(element);
+            }
+        }
+        table.setContent(groupContent);
+    }
+
     private TreeSelectionListener selectionListener = new TreeSelectionListener() {
         @Override
         public void valueChanged(TreeSelectionEvent e) {
@@ -267,13 +284,7 @@ public class UniTree {
             selectedGroup = (Group) e.getNewLeadSelectionPath().getLastPathComponent();
             selectedItemLab.setText(selectedGroup.toString());
 
-            List<GroupDataElement> groupContent = new LinkedList<>();
-            for (GroupDataElement element : tableContent) {
-                if (element.getGroupId() == selectedGroup.getId()) {
-                    groupContent.add(element);
-                }
-            }
-            table.setContent(groupContent);
+            refreshCurrentTableContent();
         }
     };
 
