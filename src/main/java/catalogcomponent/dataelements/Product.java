@@ -46,9 +46,4 @@ public class Product implements GroupDataElement {
         return id == product.id;
     }
 
-    @Override
-    public String toString() {
-        return "group=" + groupId + " | " + id + " | " + name + " | " + specification + " | " + state + " | " + price + " | " + count;
-    }
-
 }
