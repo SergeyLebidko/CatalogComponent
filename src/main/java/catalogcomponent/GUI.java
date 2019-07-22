@@ -47,7 +47,7 @@ public class GUI {
         editGroupBtn = new JButton("Переименовать группу");
         removeGroupBtn = new JButton("Удалить группу");
         addElementBtn = new JButton("Добавить элемент в группу");
-        editElementBtn = new JButton("Переименовать элемент");
+        editElementBtn = new JButton("Редактировать элемент");
         removeElementBtn = new JButton("Удалить элемент");
 
         toolPane.add(showCatalogBtn);

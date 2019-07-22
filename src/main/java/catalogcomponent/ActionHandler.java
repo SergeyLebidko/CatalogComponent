@@ -86,7 +86,24 @@ public class ActionHandler {
     }
 
     public void editElement() {
-        //Вставить код
+        Product selectedProduct = (Product) uniTree.getSelectedElement();
+        if (selectedProduct == null) return;
+
+        Map<String, Object> map = showInputProductDialog(selectedProduct);
+        if (map == null) return;
+
+        int groupId = selectedProduct.getGroupId();
+        int id = (int) selectedProduct.getField(0);
+        String name = (String) map.get("name");
+        String specification = (String) map.get("specification");
+        String state = (String) map.get("state");
+        Integer price = (Integer) map.get("price");
+        Integer count = (Integer) map.get("count");
+        Product editedProduct = new Product(groupId, id, name, specification, state, price, count);
+
+        //Вставить код внесения изменений в БД
+        catalogDAO.editProduct(id, editedProduct);
+        uniTree.editElement(selectedProduct, editedProduct);
     }
 
     public void removeElement() {
@@ -122,7 +139,8 @@ public class ActionHandler {
         nameField.setText(product == null ? "" : product.getField(1).toString());
 
         JTextField specificationField = new JTextField(15);
-        specificationField.setText(product == null ? "" : product.getField(2).toString());
+
+        specificationField.setText(product == null ? "" : (product.getField(2) == null ? "" : product.getField(2).toString()));
 
         JTextField stateField = new JTextField(15);
         stateField.setText(product == null ? "" : product.getField(3).toString());
@@ -186,9 +204,9 @@ public class ActionHandler {
 
             name = nameField.getText().trim();
             specification = specificationField.getText().trim();
-            state = stateField.getText();
+            state = stateField.getText().trim();
 
-            if (name.equals("") || specification.equals("") || state.equals("")) continue;
+            if (name.equals("") || state.equals("")) continue;
 
             try {
                 price = Integer.parseInt(priceField.getText().trim());
@@ -201,7 +219,7 @@ public class ActionHandler {
 
         Map<String, Object> map = new HashMap<>();
         map.put("name", name);
-        map.put("specification", specification);
+        map.put("specification", (specification.equals("") ? null : specification));
         map.put("state", state);
         map.put("price", price);
         map.put("count", count);

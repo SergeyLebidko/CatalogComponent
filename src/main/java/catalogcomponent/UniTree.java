@@ -234,6 +234,13 @@ public class UniTree {
         refreshCurrentTableContent();
     }
 
+    public void editElement(GroupDataElement oldElement, GroupDataElement newElement) {
+        tableContent.remove(oldElement);
+        tableContent.add(newElement);
+
+        refreshCurrentTableContent();
+    }
+
     public Group getSelectedGroup() {
         return selectedGroup;
     }

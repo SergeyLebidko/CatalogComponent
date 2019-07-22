@@ -96,6 +96,11 @@ public class CatalogDAO {
                 product.getField(5));
     }
 
+    public void editProduct(int id, Product product){
+        jdbcTemplate.update("DELETE FROM ITEMS WHERE ID=?", id);
+        addProduct(product);
+    }
+
     public boolean isRootGroup(int id) {
         int rootGroupId = jdbcTemplate.queryForObject("SELECT ID FROM GROUPS WHERE PARENT_ID is NULL", Integer.class);
         return rootGroupId == id;
