@@ -26,6 +26,9 @@ public class GUI {
     private UniTree uniTree;
 
     public GUI() {
+        UIManager.put("OptionPane.okButtonText", "Ок");
+        UIManager.put("OptionPane.cancelButtonText", "Отмена");
+
         frm = new JFrame("UniTree");
         frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frm.setSize(WIDTH, HEIGHT);
@@ -82,6 +85,27 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 actionHandler.removeGroup();
+            }
+        });
+
+        addElementBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actionHandler.addElement();
+            }
+        });
+
+        editElementBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actionHandler.editElement();
+            }
+        });
+
+        removeElementBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actionHandler.removeElement();
             }
         });
 
