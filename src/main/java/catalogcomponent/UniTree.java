@@ -235,9 +235,20 @@ public class UniTree {
     }
 
     public void editElement(GroupDataElement oldElement, GroupDataElement newElement) {
+        //Если пуст список групп, то редактировать элемент нельзя
+        if (treeContent.size() == 0) return;
+
         tableContent.remove(oldElement);
         tableContent.add(newElement);
 
+        refreshCurrentTableContent();
+    }
+
+    public void removeElement(GroupDataElement element) {
+        //Если список групп пуст, то удалять элементы нельзя
+        if (treeContent.size() == 0) return;
+
+        tableContent.remove(element);
         refreshCurrentTableContent();
     }
 

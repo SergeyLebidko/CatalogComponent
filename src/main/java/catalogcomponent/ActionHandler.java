@@ -2,6 +2,7 @@ package catalogcomponent;
 
 import catalogcomponent.dataaccess.CatalogDAO;
 import catalogcomponent.dataelements.Group;
+import catalogcomponent.dataelements.GroupDataElement;
 import catalogcomponent.dataelements.Product;
 
 import javax.swing.*;
@@ -107,7 +108,11 @@ public class ActionHandler {
     }
 
     public void removeElement() {
-        //Вставить код
+        Product selectedProduct = (Product) uniTree.getSelectedElement();
+        if (selectedProduct == null) return;
+
+        catalogDAO.removeProduct((Integer) selectedProduct.getField(0));
+        uniTree.removeElement(selectedProduct);
     }
 
     private String showInputNameDialog() {
